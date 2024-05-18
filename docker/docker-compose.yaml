@@ -1,0 +1,29 @@
+#version: "3"
+#services:
+#  mongo:
+#    image: mongo:latest
+#    ports:
+#      - "27017:27017"
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: root
+
+version: '3.8'
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d
+    networks:
+      - tasktracker-network
+
+volumes:
+  mongo-data:
+
+networks:
+  tasktracker-network:
+    driver: bridge
