@@ -1,5 +1,6 @@
 package ru.skillbox.tasktracker.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,18 +21,20 @@ public class UserController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('USER') || hasAuthority('MANAGER')")
     public Flux<UserDTO> findAll() {
         return userService.findAll()
                 .map(userMapper::toDto);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER') || hasAuthority('MANAGER')")
     public Mono<UserDTO> findById(@PathVariable String id) {
         return userService.findById(id)
                 .map(userMapper::toDto);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public Mono<UserDTO> create(@RequestBody UserDTO userDTO) {
         User user = userMapper.toEntity(userDTO);
         return userService.create(user)
@@ -39,6 +42,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER') || hasAuthority('MANAGER')")
     public Mono<UserDTO> update(@PathVariable String id, @RequestBody UserDTO userDTO) {
         User user = userMapper.toEntity(userDTO);
         return userService.update(id, user)
@@ -46,6 +50,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER') || hasAuthority('MANAGER')")
     public Mono<Void> deleteById(@PathVariable String id) {
         return userService.deleteById(id);
     }

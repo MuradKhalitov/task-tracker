@@ -1,5 +1,12 @@
-db = db.getSiblingDB('tasktrackerdb');  // Создает или подключается к базе данных tasktrackerdb
+//use admin
+//db.createUser({
+//  user: "root",
+//  pwd: "root",
+//  roles: [ { role: "root", db: "admin" } ]
+//});
 
-// Создание коллекций
+db = db.getSiblingDB('tasktrackerdb');
+
 db.createCollection('user');
 db.createCollection('task');
+
